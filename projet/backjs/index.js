@@ -131,6 +131,18 @@ app.get('/', function (req, res) {
     res.send(bertrand.list());
 });
 
-app.listen(3000, function() {
-    console.log('Listening on port 3000 haha...')
+/*
+Q1 :
+Créer un nouveau endpoint qui accepte les requetes en POST (POST http://localhost:4000/search) 
+avec une donnée "text" à l'intérieur du payload.
+Revoyer les resultats de la recherche utilisant la donnée "text" qui a été envoyée.
+Indice : pour récupérer la données "text" du payload : req.body.text
+*/
+
+app.post('/search', function(req, res) {
+    res.send(bertrand.search(req.body.text));
+})
+
+app.listen(4000, function() {
+    console.log('Listening on port 4000 haha...')
 })

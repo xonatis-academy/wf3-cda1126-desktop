@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>Annuaire</h1>
+    <input type="text" data-bind="value: searchText" />
+    <button data-bind="click: handleSearch">Chercher</button>
+    <button data-bind="click: handleList">Tout</button>
+    <div data-bind="foreach: entries">
+        <div data-bind="text: $data"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+    <script>
+
+        class ApiService {
+            list(callback) {
+                fetch('http://localhost:4000')
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    callback(data);
+                });
+            }
+
+            search(text, callback) {
+                fetch('http://localhost:4000/search', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: text
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    callback(data);
+                });
+            }
+        }
+
+        class ViewModel {
+
+            searchText;
+            entries;
+            apiService;
+
+            constructor(apiService) {
+                this.apiService = apiService;
+                this.searchText = ko.observable('Entrez votre recherche ici...');
+                this.entries = ko.observableArray([]);
+            }
+
+            transferDataToEntries(data) {
+                this.entries.removeAll();
+                for (const element of data) {
+                    this.entries.push(Object.values(element).join(' - '));
+                }
+            }
+
+            handleList() {
+                this.apiService.list(this.transferDataToEntries);
+            }
+
+            handleSearch() {
+                this.apiService.search(this.searchText(), this.transferDataToEntries);
+            }
+        }
+
+        (function() {
+            const apiService = new ApiService();
+            const viewModel = new ViewModel(apiService);
+            ko.applyBindings(viewModel);
+        })();
+
+    </script>
+
+</body>
+
+</html>

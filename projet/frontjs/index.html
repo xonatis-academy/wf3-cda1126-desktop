@@ -11,16 +11,71 @@
     <input id="typing-input" type="text" />
     <button id="search-btn">Chercher</button>
     <button id="list-btn">Tout</button>
+    <div id="result-div"></div>
 
     <script>
-        function handleList() {
-            alert('Test');
+        function display(data) {
+            // 1. Sélectionner la div de resultat
+            const div = document.getElementById('result-div');
+            // 2. Effacer son contenu
+            div.replaceChildren();
+            // 3. @PourChaque element @Dans data
+            for (const element of data)
+            // @DebutBloc
+            {
+                // 4. Créer une nouvelle div 
+                const row = document.createElement('div');
+                // 5. Changer le contenu de cette div avec Object.values(element).join(' - ')
+                row.innerHTML = Object.values(element).join(' - ');
+                // 6. Rattacher la div créée à la div resultat
+                div.appendChild(row);
+            // @FinBloc
+            }
         }
-
-        const listBtn = document.getElementById('list-btn');
         
+        function handleList() {
+            fetch('http://localhost:4000')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                display(data);
+            });
+        }
+        
+        /**
+         * Q2 : Modifier la fonction handleSearch pour appeler le service search
+         * sur l'endpoint : POST http://localhost:4000/search
+         * en envoyant une donnée "text" avec comme valeur ce que l'utilisateur a
+         * entré dans l'input.
+         * Afficher les resultats provenant du service.
+         */
+        function handleSearch() {
+            let value = document.getElementById('typing-input').value;
+            fetch('http://localhost:4000/search', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: value
+                })
+            })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                display(data);
+            });
+        }
+        
+        const listBtn = document.getElementById('list-btn');
         listBtn.addEventListener('click', handleList);
-
+        
+        const searchBtn = document.getElementById('search-btn');
+        searchBtn.addEventListener('click', handleSearch);
+        
     </script>
 </body>
 </html>
