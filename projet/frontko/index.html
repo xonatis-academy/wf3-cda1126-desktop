@@ -72,11 +72,15 @@
             }
 
             handleList() {
-                this.apiService.list(this.transferDataToEntries);
+                this.apiService.list((data) => {
+                    this.transferDataToEntries(data);
+                });
             }
 
             handleSearch() {
-                this.apiService.search(this.searchText(), this.transferDataToEntries);
+                this.apiService.search(this.searchText(), (data) => {
+                    this.transferDataToEntries(data);
+                });
             }
         }
 
