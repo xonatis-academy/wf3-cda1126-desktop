@@ -33,7 +33,7 @@ class BaseProvider extends IDataProvider {
         let search = text.toLowerCase();
         let results = [];
         for (const item of this.getData()) {
-            if (JSON.stringify(item).toLowerCase().includes(search)) {
+            if (Object.values(item).join(' ').toLowerCase().includes(search)) {
                 results.push(item);
             }
         }
