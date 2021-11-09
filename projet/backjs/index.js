@@ -1,37 +1,37 @@
-class Entity {
-    id;
+class Entity { 
+    id; 
 }
 
 class Person extends Entity {
-    firstname;
-    lastname;
+    firstname; 
+    lastname; 
 }
 
 class Company extends Entity {
-    name;
+    name; 
 }
 
-class IDataProvider {
-    list() {
+class IDataProvider { 
+    list() { 
 
     }
-    search(text) {
+    search(text) { 
 
     }
 }
 
-class BaseProvider extends IDataProvider {
-    getData() {
+class BaseProvider extends IDataProvider { 
+    getData() { 
 
     }
 
-    list() {
+    list() { 
         return this.getData();
     }
 
-    search(text) {
-        let search = text.toLowerCase();
-        let results = [];
+    search(text) { 
+        let search = text.toLowerCase(); 
+        let results = []; 
         for (const item of this.getData()) {
             if (Object.values(item).join(' ').toLowerCase().includes(search)) {
                 results.push(item);
@@ -42,7 +42,7 @@ class BaseProvider extends IDataProvider {
 }
 
 class PersonProvider extends BaseProvider {
-    getData() {
+    getData() { 
         let p1 = new Person();
         p1.id = 1;
         p1.firstname = 'Sophie';
@@ -65,7 +65,7 @@ class PersonProvider extends BaseProvider {
 }
 
 class CompanyProvider extends BaseProvider {
-    getData() {
+    getData() { 
         let c1 = new Company();
         c1.id = 1;
         c1.name = 'Google';
@@ -83,13 +83,13 @@ class CompanyProvider extends BaseProvider {
 }
 
 class RepositoryService {
-    providers;
+    providers; 
 
-    constructor(providers) { // c'est qu'on exige lors de l'instanciation des providers : une dépendance
+    constructor(providers) { 
         this.providers = providers;
     }
 
-    list() {
+    list() { 
         let accu = [];
         for (const element of this.providers)
         {
@@ -98,7 +98,7 @@ class RepositoryService {
         return accu;
     }
 
-    search(text) {
+    search(text) { 
         let accu = [];
         for (const element of this.providers)
         {
@@ -110,22 +110,22 @@ class RepositoryService {
 
 const jose = new PersonProvider();
 const sophie = new CompanyProvider();
-const bertrand = new RepositoryService([jose, sophie]); // lié au constructor POUR LA CONSTRUCTION
+const bertrand = new RepositoryService([jose, sophie]); 
 
 const express = require('express');
 const cors = require('cors');
 
-let app = express(); // création du serveur
-app.use(cors()); // utilisation de cors : autoriser les requetes HTTP provenant d'une autre origine
-app.use(express.json()); // utilisation de json : permettre la communication avec des données au format JSON
+let app = express(); 
+app.use(cors()); 
+app.use(express.json()); 
 
-// GET (recuperation de données) - list
-// POST (envoi de données avec une intention de création) - search (pour l'exemple, habituellement en GET)
-// PUT (envoi de données avec une intenion de modification totale)
-// PATCH  (envoi de données avec une intenion de modification partielle)
-// DELETE (suppression de données)
-// HEAD (salutation)
-// OPTIONS (demande d'autorisation)
+
+
+
+
+
+
+
 
 app.get('/', function (req, res) {
     res.send(bertrand.list());
@@ -133,7 +133,7 @@ app.get('/', function (req, res) {
 
 /*
 Q1 :
-Créer un nouveau endpoint qui accepte les requetes en POST (POST http://localhost:4000/search) 
+Créer un nouveau endpoint qui accepte les requetes en POST (POST http:
 avec une donnée "text" à l'intérieur du payload.
 Revoyer les resultats de la recherche utilisant la donnée "text" qui a été envoyée.
 Indice : pour récupérer la données "text" du payload : req.body.text
