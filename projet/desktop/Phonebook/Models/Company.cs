@@ -12,5 +12,10 @@ namespace Phonebook.Models
         {
             Name = name;
         }
+
+        public override string ToString()
+        {
+            return Id + ": " + Name;
+        }
     }
 }

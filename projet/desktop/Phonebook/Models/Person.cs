@@ -14,5 +14,10 @@ namespace Phonebook.Models
             Firstname = firstname;
             Lastname = lastname;
         }
+
+        public override string ToString()
+        {
+            return Id + ": " + Firstname + " " + Lastname;
+        }
     }
 }
