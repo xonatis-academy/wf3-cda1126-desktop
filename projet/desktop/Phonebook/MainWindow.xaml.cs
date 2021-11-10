@@ -1,6 +1,7 @@
 ﻿using Phonebook.Models;
 using Phonebook.Providers;
 using Phonebook.Services;
+using Phonebook.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,16 @@ namespace Phonebook
             IEnumerable<Entity> results = bertrand.Search("so");
 
             MessageBox.Show(JsonSerializer.Serialize(results));
+        }
+
+        public void About_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext = new AboutViewModel();
+        }
+
+        public void Contacts_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext = new ContactsViewModel();
         }
     }
 }
