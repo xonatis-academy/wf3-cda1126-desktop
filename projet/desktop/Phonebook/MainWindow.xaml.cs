@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Phonebook.Models;
+using Phonebook.Providers;
+using Phonebook.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,10 +29,16 @@ namespace Phonebook
             InitializeComponent();
         }
 
-        // public ExecuterPrg(sender: object, e: RoutedEventArgs): void
         public void ExecuterPrg(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(JsonSerializer.Serialize(""));
+            IDataProvider jose = new PersonProvider();
+            IDataProvider sophie = new CompanyProvider();
+            IEnumerable<IDataProvider> providers = new List<IDataProvider>() { jose, sophie };
+            RepositoryService bertrand = new RepositoryService(providers);
+
+            IEnumerable<Entity> results = bertrand.Search("so");
+
+            MessageBox.Show(JsonSerializer.Serialize(results));
         }
     }
 }
